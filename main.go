@@ -1,39 +1,39 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/gorilla/websocket"
+	"../word-memory/manage"
+	"../word-memory/user"
+
+	"github.com/gorilla/mux"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin:     func(r *http.Request) bool { return true },
-}
-
 func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":4000", nil)
-}
+	router := mux.NewRouter()
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	socket, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	for {
-		msgType, msg, err := socket.ReadMessage()
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fmt.Println(string(msg))
-		if err = socket.WriteMessage(msgType, msg); err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
+	//user apit
+	router.HandleFunc("/search", user.SearchWord).Methods("GET")
+	router.HandleFunc("/login", user.UserLogIn).Methods("POST")
+	router.HandleFunc("/logout", user.UserLogOut).Methods("POST")
+	router.HandleFunc("/signup", user.UserSignUp).Methods("POST")
+	router.HandleFunc("/profile", user.GetProfile).Methods("GET")
+	router.HandleFunc("/profile/change", user.ChangeProfile).Methods("PUT")
+	router.HandleFunc("/profile/changepassword", user.ChangePassword).Methods("PUT")
+	router.HandleFunc("/recommend", user.RecommendArticle).Methods("GET")
+	router.HandleFunc("/battle", user.WordBattle).Methods("GET")
+	router.HandleFunc("/battlehistory", user.GetBattleHistory).Methods("GET")
+
+	//manage api
+	router.HandleFunc("/manage/insert", manage.InsertWord).Methods("POST")
+	router.HandleFunc("/manage/modify", manage.ModifyWord).Methods("PUT")
+	router.HandleFunc("/manage/delete", manage.DeleteWord).Methods("DELETE")
+	router.HandleFunc("/manage/getwords", manage.GetWords).Methods("GET")
+	router.HandleFunc("/manage/getmodifedwords", manage.GetModifiedWords).Methods("GET")
+	router.HandleFunc("/manage/getdeletedwords", manage.GetDeletedWords).Methods("GET")
+	router.HandleFunc("/manage/getsearchwords", manage.GetSearchedWords).Methods("GET")
+
+	// start server
+	log.Fatal(http.ListenAndServe(":4000", router))
 }
