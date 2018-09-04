@@ -45,3 +45,13 @@ func (u *UsersDAO) SearchWord(spell string) (bool, Word) {
 	}
 	return true, word
 }
+
+// Insert word
+func (u *UsersDAO) InsertWord(word Word) (bool, error) {
+	err := db.C(COLLECTION_WORD).Insert(&word)
+	if err != nil {
+		log.Println(err)
+		return false, err
+	}
+	return true, nil
+}
