@@ -10,14 +10,14 @@ import (
 
 func SearchWord(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	log.Println("search word", params["spell"], "...")
-	flag, word := dao.SearchWord(params["spell"])
-	if !flag {
+	log.Println("searching word \"", params["spell"], "\"...")
+	word, err := dao.SearchWordBySpell(params["spell"])
+	if err != nil {
 		log.Println("word not found")
 		RespondWithError(w, http.StatusBadRequest, "No such words")
 		return
 	}
-	RespondWithJson(w, http.StatusOK, word.Meaning)
+	RespondWithJson(w, http.StatusOK, word)
 }
 
 func UserLogIn(w http.ResponseWriter, r *http.Request) {

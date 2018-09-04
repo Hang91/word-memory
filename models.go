@@ -30,8 +30,8 @@ type Word struct {
 // WordMessage is the struct to store message from api request
 // of word information
 type WordMessage struct {
-	ID      bson.ObjectId `bson:"_id" json:"id"`
-	Spell   string        `bson:"spell" json:"spell"`
-	Meaning string        `bson:"meaning" json:"meaning"`
-	Level   int           `bson:"level" json:"level"`
+	ID      bson.ObjectId     `bson:"_id" json:"id"`
+	Spell   string            `bson:"spell" json:"spell"`
+	Meaning map[string]string `bson:"meaning" json:"meaning"`
+	Level   int               `bson:"level" json:"level"`
 }
