@@ -53,5 +53,5 @@ func (u *UsersDAO) InsertWord(word Word) (bool, error) {
 		log.Println(err)
 		return false, err
 	}
-	return true, nil
+	return true, err
 }
