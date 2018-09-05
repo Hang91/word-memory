@@ -76,12 +76,4 @@ func (u *UsersDAO) DeleteWord(ID bson.ObjectId) error {
 		log.Println(err)
 		return err
 	}
-	return nil
-}
-
-// Find all words in database
-func (u *UsersDAO) GetAllWords() ([]Word, error) {
-	var words []Word
-	err := db.C(COLLECTION_WORD).Find(bson.M{}).All(&words)
-	return words, err
 }
