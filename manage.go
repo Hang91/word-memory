@@ -17,6 +17,7 @@ func InsertWord(w http.ResponseWriter, r *http.Request) {
 		log.Println("Invalid request!")
 		return
 	}
+	word.ID = bson.NewObjectId()
 	log.Println(word)
 	daoErr := dao.InsertWord(word)
 	if daoErr != nil {
