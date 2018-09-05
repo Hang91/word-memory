@@ -23,7 +23,7 @@ func CreateRouter(router *mux.Router) {
 	router.HandleFunc("/manage/modify", ModifyWord).Methods("PUT")
 	router.HandleFunc("/manage/delete", DeleteWord).Methods("DELETE")
 	router.HandleFunc("/manage/getwords", GetWords).Methods("GET")
-	router.HandleFunc("/manage/getmodifedwords", GetModifiedWords).Methods("GET")
-	router.HandleFunc("/manage/getdeletedwords", GetDeletedWords).Methods("GET")
-	router.HandleFunc("/manage/getsearchwords", GetSearchedWords).Methods("GET")
+	// router.HandleFunc("/manage/getmodifedwords", GetModifiedWords).Methods("GET")
+	// router.HandleFunc("/manage/getdeletedwords", GetDeletedWords).Methods("GET")
+	// router.HandleFunc("/manage/getsearchwords", GetSearchedWords).Methods("GET")
 }

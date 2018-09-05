@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -91,14 +90,14 @@ func GetWords(w http.ResponseWriter, r *http.Request) {
 	RespondWithJson(w, http.StatusOK, words)
 }
 
-func GetModifiedWords(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
+// func GetModifiedWords(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "not implemented yet !")
+// }
 
-func GetDeletedWords(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
+// func GetDeletedWords(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "not implemented yet !")
+// }
 
-func GetSearchedWords(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
+// func GetSearchedWords(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintln(w, "not implemented yet !")
+// }

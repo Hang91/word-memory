@@ -56,7 +56,7 @@ func (u *UsersDAO) InsertWord(word Word) error {
 		log.Println(err)
 		return err
 	}
-	return nil
+	return err
 }
 
 // Update word
@@ -66,7 +66,7 @@ func (u *UsersDAO) UpdateWord(word Word) error {
 		log.Println(err)
 		return err
 	}
-	return nil
+	return err
 }
 
 // Delete word
@@ -76,4 +76,12 @@ func (u *UsersDAO) DeleteWord(ID bson.ObjectId) error {
 		log.Println(err)
 		return err
 	}
+	return err
+}
+
+// Get All Words
+func (u *UsersDAO) GetAllWords() ([]Word, error) {
+	var words []Word
+	err := db.C(COLLECTION_WORD).Find(bson.M{}).All(&words)
+	return words, err
 }
