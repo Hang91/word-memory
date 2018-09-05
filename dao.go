@@ -35,23 +35,45 @@ func (u *UsersDAO) Connect() {
 	db = session.DB(u.Database)
 }
 
-// Searchword
-func (u *UsersDAO) SearchWord(spell string) (bool, Word) {
+// Search word
+func (u *UsersDAO) SearchWordBySpell(spell string) (Word, error) {
 	var word Word
 	err := db.C(COLLECTION_WORD).Find(bson.M{"spell": spell}).One(&word)
-	if err != nil {
-		log.Println(err)
-		return false, word
-	}
-	return true, word
+	return word, err
+}
+
+// Search word by id
+func (u *UsersDAO) SearchWordById(id bson.ObjectId) (Word, error) {
+	var word Word
+	err := db.C(COLLECTION_WORD).FindId(id).One(&word)
+	return word, err
 }
 
 // Insert word
-func (u *UsersDAO) InsertWord(word Word) (bool, error) {
+func (u *UsersDAO) InsertWord(word Word) error {
 	err := db.C(COLLECTION_WORD).Insert(&word)
 	if err != nil {
 		log.Println(err)
-		return false, err
+		return err
 	}
-	return true, err
+	return nil
+}
+
+// Update word
+func (u *UsersDAO) UpdateWord(word Word) error {
+	err := db.C(COLLECTION_WORD).UpdateId(word.ID, &word)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+// Delete word
+func (u *UsersDAO) DeleteWord(ID bson.ObjectId) error {
+	err := db.C(COLLECTION_WORD).RemoveId(ID)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 }

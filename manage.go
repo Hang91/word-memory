@@ -11,21 +11,16 @@ import (
 
 func InsertWord(w http.ResponseWriter, r *http.Request) {
 	var word Word
-	var message WordMessage
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&message)
+	err := decoder.Decode(&word)
 	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid request!")
 		log.Println("Invalid request!")
 		return
 	}
-	word.ID = bson.NewObjectId()
-	word.Spell = message.Spell
-	word.Level = message.Level
-	word.Meaning = MeaningStringToMap(message.Meaning)
 	log.Println(word)
-	flag, err := dao.InsertWord(word)
-	if !flag {
+	daoErr := dao.InsertWord(word)
+	if daoErr != nil {
 		RespondWithError(w, http.StatusInternalServerError, err.Error())
 		log.Println("InsertWord function failed!")
 		return
@@ -35,15 +30,65 @@ func InsertWord(w http.ResponseWriter, r *http.Request) {
 }
 
 func ModifyWord(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	log.Println("Updating word...")
+	var word Word
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&word)
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid request!")
+		log.Println("Invalid request!")
+		return
+	}
+	log.Println(word)
+	daoErr := dao.UpdateWord(word)
+	if daoErr != nil {
+		RespondWithError(w, http.StatusInternalServerError, err.Error())
+		log.Println("UpdateWord function failed!")
+		return
+	}
+	log.Println(word.Spell, "update success!")
+	RespondWithJson(w, http.StatusOK, word)
 }
 
 func DeleteWord(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	log.Println("Deleting word...")
+	type Id struct {
+		ID bson.ObjectId `bson:"_id" json:"id"`
+	}
+	var id Id
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&id)
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid request!")
+		log.Println("Invalid request!")
+		return
+	}
+	word, err := dao.SearchWordById(id.ID)
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid request!")
+		log.Println("Cannot find word!")
+		return
+	}
+	daoErr := dao.DeleteWord(id.ID)
+	if daoErr != nil {
+		RespondWithError(w, http.StatusInternalServerError, err.Error())
+		log.Println("DeleteWord function failed!")
+		return
+	}
+	log.Println(word.Spell, "delete success!")
+	RespondWithJson(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
 func GetWords(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	log.Println("Getting all words...")
+	words, err := dao.GetAllWords()
+	if err != nil {
+		RespondWithError(w, http.StatusInternalServerError, err.Error())
+		log.Println("DeleteWord function failed!")
+		return
+	}
+	log.Println("Get all words success!")
+	RespondWithJson(w, http.StatusOK, words)
 }
 
 func GetModifiedWords(w http.ResponseWriter, r *http.Request) {
