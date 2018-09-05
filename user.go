@@ -14,10 +14,10 @@ func SearchWord(w http.ResponseWriter, r *http.Request) {
 	flag, word := dao.SearchWord(params["spell"])
 	if !flag {
 		log.Println("word not found")
-		respondWithError(w, http.StatusBadRequest, "No such words")
+		RespondWithError(w, http.StatusBadRequest, "No such words")
 		return
 	}
-	respondWithJson(w, http.StatusOK, word.Meaning)
+	RespondWithJson(w, http.StatusOK, word.Meaning)
 }
 
 func UserLogIn(w http.ResponseWriter, r *http.Request) {
