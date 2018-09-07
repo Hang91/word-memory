@@ -1,6 +1,6 @@
 # word-memory
 
-## Movivation
+## Motivation
 This project is for English learners to memorize english words.
 
 Sometimes, when I recall the days in which I prepared for GRE and TOEFL, I remember the endless word lists and the frustration that I cannot recollect the meaning of a word that I memorized yesterday. Although memorizing a single word is a simple task, I still believe that the most boring and chanllenging thing is word-memory. Comparing to other learning process, you will spend more time on word-memory to get the feel that what you have done is really useful and helpful. 
@@ -11,5 +11,9 @@ To shrink the size of the "learning cycle" of word-memory, we are going to provi
 
 ## Framework
 We will use Golang as the primary coding language, MongoDB as database.
+
+## English to Chinese Dict
+We start the English to Chinese dictionary from  https://github.com/skywind3000/ECDICT
+
 
 
