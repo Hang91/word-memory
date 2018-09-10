@@ -33,6 +33,7 @@ const (
 // difficulty of a word
 // Meaning is a map. The key of the map is part of speech,
 // the value is possible meanings under this part.
+// Definition is the english explanation of a word
 type Word struct {
 	ID         bson.ObjectId     `bson:"_id" json:"id"`
 	Spell      string            `bson:"spell" json:"spell"`
@@ -95,7 +96,7 @@ func Connect() {
 }
 
 // split string
-// n:鱼;vi:捕鱼;vt:捕鱼
+// n. 鱼\nvi. 捕鱼\nvt. 捕鱼
 func MeaningStringToMap(inputStr string) map[string]string {
 	result := make(map[string]string)
 	strs := strings.Split(inputStr, "\\n")
@@ -110,7 +111,7 @@ func MeaningStringToMap(inputStr string) map[string]string {
 	return result
 }
 
-// The spell doesnot include "-", " "
+// The spell of the string that only contains letter is a word
 func IsWord(inputStr string) bool {
 	for _, ch := range inputStr {
 		if !unicode.IsLetter(ch) {
