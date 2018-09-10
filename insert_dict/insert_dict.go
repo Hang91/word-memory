@@ -111,7 +111,7 @@ func MeaningStringToMap(inputStr string) map[string]string {
 	return result
 }
 
-// The spell of the string that only contains letter is a word
+// The string whose spell only contains letter is a word
 func IsWord(inputStr string) bool {
 	for _, ch := range inputStr {
 		if !unicode.IsLetter(ch) {
