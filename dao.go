@@ -88,7 +88,6 @@ func (u *UsersDAO) GetAllWords() ([]Word, error) {
 
 // Register user
 func (u *UsersDAO) RegisterUser(user User) error {
-	//插入encrypt函数
 	err := db.C(COLLECTION_USER).Insert(&user)
 	if err != nil {
 		log.Println(err)
@@ -98,31 +97,18 @@ func (u *UsersDAO) RegisterUser(user User) error {
 }
 
 // User LogIn
-// func (u *UsersDAO) LogInUser(username string)（User, error) {
-// 	var user User
-// 	err := db.C(COLLECTION_USER).Find(bson.M{"username": username}).One(&user)
-// 	if err != nil {
-// 		log.Println("Username not found!")
-// 		return user, err
-// 	}
-
-// 	return user, err
-
-//err := db.C(COLLECTION_USER).Find(bson.M{"Password": password})
-// err := strings.Compare(user.Password, password)
-// if err == -1 {
-// 	log.Println("Password incorrect!")
-// 	return
-// }
-//}
-
-// User LogIn
-func (u *UsersDAO) LogInUser(username string) (User, error) {
+func (u *UsersDAO) FindUserByEmail(email string) User {
 	var user User
-	err := db.C(COLLECTION_USER).Find(bson.M{"username": username}).One(&user)
+	err := db.C(COLLECTION_USER).Find(bson.M{"email": email}).One(&user)
 	if err != nil {
-		log.Println("Username not found!")
-		return user, err
+		log.Println("User not found!")
+		return user
 	}
-	return user, err
+	//log.Println("Username correct!")
+	return user
 }
+
+//User LogOut
+// func (u *UsersDAO) UserLogOut(email string) {
+
+// }

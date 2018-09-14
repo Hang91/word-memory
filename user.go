@@ -1,12 +1,13 @@
 package main
 
 import (
-	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/mgo.v2/bson"
 
 	"github.com/gorilla/mux"
@@ -25,10 +26,32 @@ func SearchWord(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserLogIn(w http.ResponseWriter, r *http.Request) {
-	// 	username := r.FormValue("username")
-	// 	password := r.FormValue("password")
+	var user1 User
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&user1)
+	log.Println(user1.Email, user1.Password)
 
-	// 	//把username传过去，把user取出来，然后对比password
+	if err != nil {
+		log.Println("Invalid request!")
+		return
+	}
+	user2 := dao.FindUserByEmail(user1.Email)
+	// passwordLogIn := sha256.Sum256([]byte(password))
+	// err := reflect.DeepEqual(user.Password, passwordLogIn)
+	//err := bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+	passwordLogIn, err1 := bcrypt.GenerateFromPassword([]byte(user1.Password), bcrypt.DefaultCost)
+	if err1 != nil {
+		log.Println("Password fault!")
+	}
+	passwordString := string(passwordLogIn[:])
+	err2 := strings.Compare(user2.Password, passwordString)
+	if err2 == -1 {
+		log.Println("Password incorrect!")
+		return
+	} else {
+		log.Println("Password correct!")
+	}
+	RespondWithJson(w, http.StatusOK, user2)
 
 }
 
@@ -45,11 +68,13 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 		log.Println("Invalid request!")
 		return
 	}
-	PasswordEncrypt := sha256.Sum256([]byte(user.Password))
-	// PasswordEncrypt := sha256.New()
-	// PasswordEncrypt.Write([]byte(user.Password))
-	user.PasswordEncrypt = PasswordEncrypt
-	user.Password = "signup"
+	// passwordEncrypt := sha256.Sum256([]byte(user.Password))
+	// user.PasswordEncrypt = PasswordEncrypt
+	passwordEncrypt, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println(err)
+	}
+	user.Password = string(passwordEncrypt[:])
 	user.ID = bson.NewObjectId()
 	log.Println(user)
 	daoErr := dao.RegisterUser(user)
