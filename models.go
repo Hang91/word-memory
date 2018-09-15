@@ -1,10 +1,13 @@
 package main
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"gopkg.in/mgo.v2/bson"
+)
 
 //User is the stuct to record user information,
 //user account password,
 //user search history
+
 type User struct {
 	ID            bson.ObjectId `bson:"_id" json:"id"`
 	FirstName     string        `bson:"first_name" json:"first_name"`
@@ -12,6 +15,10 @@ type User struct {
 	SearchHistory []string      `bson:"search_history" json:"search_history"`
 	Email         string        `bson:"email" json:"email"`
 	Password      string        `bson:"password" json:"password"`
+	//	PasswordEncrypt [32]byte
+	Username string `bson:"username" json:"username"`
+	Identity string `bson:"identity" json:"identity"`
+	//identity: guest, user, vip, admin
 }
 
 // Word is the stuct to record word,

@@ -35,7 +35,7 @@ func (u *UsersDAO) Connect() {
 	db = session.DB(u.Database)
 }
 
-// Search word
+// Search word by spell
 func (u *UsersDAO) SearchWordBySpell(spell string) (Word, error) {
 	var word Word
 	err := db.C(COLLECTION_WORD).Find(bson.M{"spell": spell}).One(&word)
@@ -85,3 +85,30 @@ func (u *UsersDAO) GetAllWords() ([]Word, error) {
 	err := db.C(COLLECTION_WORD).Find(bson.M{}).All(&words)
 	return words, err
 }
+
+// Register user
+func (u *UsersDAO) RegisterUser(user User) error {
+	err := db.C(COLLECTION_USER).Insert(&user)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return err
+}
+
+// User LogIn
+func (u *UsersDAO) FindUserByEmail(email string) User {
+	var user User
+	err := db.C(COLLECTION_USER).Find(bson.M{"email": email}).One(&user)
+	if err != nil {
+		log.Println("User not found!")
+		return user
+	}
+	//log.Println("Username correct!")
+	return user
+}
+
+//User LogOut
+// func (u *UsersDAO) UserLogOut(email string) {
+
+// }
