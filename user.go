@@ -22,6 +22,7 @@ func SearchWord(w http.ResponseWriter, r *http.Request) {
 		RespondWithError(w, http.StatusBadRequest, "No such words")
 		return
 	}
+	log.Println(word)
 	RespondWithJson(w, http.StatusOK, word)
 }
 

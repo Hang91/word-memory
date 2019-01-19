@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -28,7 +28,7 @@ func (u *UsersDAO) Connect() {
 	log.Println("Start connect database server...")
 	session, err := mgo.Dial(u.Server)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 		return
 	}
 	log.Println("Database", u.Database, "connected.")

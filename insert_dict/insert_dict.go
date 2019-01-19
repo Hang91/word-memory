@@ -1,3 +1,4 @@
+// run this code in "insert_dict" directory with: go run *.go
 package main
 
 import (
@@ -8,7 +9,7 @@ import (
 	"strings"
 	"unicode"
 
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 
 	"gopkg.in/mgo.v2/bson"
 )
