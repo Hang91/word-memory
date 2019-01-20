@@ -64,6 +64,7 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 	var user User
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&user)
+	log.Println(user)
 	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid request!")
 		log.Println("Invalid request!")
@@ -77,14 +78,13 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Password = string(passwordEncrypt[:])
 	user.ID = bson.NewObjectId()
-	log.Println(user)
 	daoErr := dao.RegisterUser(user)
 	if daoErr != nil {
 		RespondWithError(w, http.StatusInternalServerError, err.Error())
 		log.Println("Register failed!")
 		return
 	}
-	log.Println(user.Username, "register success!")
+	log.Println(user.Email, "register success!")
 	RespondWithJson(w, http.StatusCreated, user)
 
 }
